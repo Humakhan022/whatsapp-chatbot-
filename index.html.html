@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp AI Chatbot & Dataset Studio</title>
+  <meta name="description" content="AI WhatsApp Chatbot running on your custom dataset with live simulator, Meta Cloud API webhook, and dataset editor.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Top Global App Bar -->
+    <header class="global-navbar">
+      <div class="brand-zone">
+        <div class="whatsapp-logo-badge">
+          <i class="fa-brands fa-whatsapp"></i>
+        </div>
+        <div class="brand-meta">
+          <h1 class="brand-title">WhatsApp Bot Studio</h1>
+          <span class="brand-subtitle">Custom Dataset AI Assistant Engine</span>
+        </div>
+      </div>
+
+      <!-- Quick Dataset Switcher in Header -->
+      <div class="header-dataset-selector">
+        <label for="datasetDropdown"><i class="fa-solid fa-database"></i> Active Dataset:</label>
+        <select id="datasetDropdown" class="dataset-select" title="Switch Dataset">
+          <option value="novatech_store">NovaTech Store (Tech E-Commerce)</option>
+          <option value="zenith_clinic">Zenith Clinic (Healthcare & Appointments)</option>
+          <option value="artisan_cafe">Artisan Cafe (Coffee & Food Menu)</option>
+        </select>
+      </div>
+
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="header-icon-btn" title="Toggle Dark/Light Mode">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button id="openApiGuideBtn" class="header-action-btn pulse-glow">
+          <i class="fa-solid fa-plug"></i> Connect Real WhatsApp
+        </button>
+        <button id="openDatasetDrawerBtn" class="header-action-btn primary-btn">
+          <i class="fa-solid fa-sliders"></i> Dataset Manager
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <div class="workspace-container">
+      
+      <!-- Left Sidebar: Bot Info, Quick Presets & Live Analytics -->
+      <aside class="sidebar-panel">
+        <div class="sidebar-section profile-card">
+          <div class="bot-avatar-wrapper">
+            <div class="bot-avatar-img" id="sidebarAvatar">
+              <i class="fa-solid fa-robot"></i>
+            </div>
+            <span class="online-indicator" title="Bot Online"></span>
+          </div>
+          <div class="bot-details">
+            <div class="bot-name-row">
+              <h2 id="sidebarBotName" class="bot-display-name">NovaTech Assistant</h2>
+              <span class="verified-badge" title="Meta Verified Business Account">
+                <i class="fa-solid fa-circle-check"></i>
+              </span>
+            </div>
+            <p id="sidebarBotTagline" class="bot-tagline">Official Sales & Support Bot</p>
+            <span id="sidebarCategoryBadge" class="category-badge">E-Commerce & Tech</span>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="sidebar-tabs">
+          <button class="nav-tab active" data-tab="simulator">
+            <i class="fa-regular fa-comment-dots"></i> Live Chat
+          </button>
+          <button class="nav-tab" data-tab="presets">
+            <i class="fa-solid fa-cubes"></i> Datasets
+          </button>
+          <button class="nav-tab" data-tab="analytics">
+            <i class="fa-solid fa-chart-pie"></i> Analytics
+          </button>
+        </div>
+
+        <!-- Tab 1: Simulator Quick Suggestions -->
+        <div class="tab-content active" id="tabContentSimulator">
+          <div class="quick-try-box">
+            <div class="section-title-row">
+              <h3><i class="fa-regular fa-lightbulb"></i> Try Prompting:</h3>
+              <span class="hint-tag">Click to send</span>
+            </div>
+            <div class="prompt-chips" id="quickPromptChips">
+              <button class="prompt-chip" data-query="Track ORD-4892">📦 Track ORD-4892</button>
+              <button class="prompt-chip" data-query="Best laptops for gaming">💻 Best gaming laptops</button>
+              <button class="prompt-chip" data-query="What is your retun polic?">🔄 Return policy (with typo test)</button>
+              <button class="prompt-chip" data-query="Do you have discounts or student offers?">🎉 Student discounts</button>
+              <button class="prompt-chip" data-query="Can I speak to a human agent?">👤 Talk to human agent</button>
+              <button class="prompt-chip" data-query="What are your store hours and location?">📍 Store hours & map</button>
+            </div>
+          </div>
+
+          <div class="feature-highlights">
+            <div class="highlight-item">
+              <div class="highlight-icon"><i class="fa-solid fa-brain"></i></div>
+              <div class="highlight-info">
+                <strong>Typo & Semantic Engine</strong>
+                <p>Matches fuzzy spelling, Jaccard token overlap & IDF</p>
+              </div>
+            </div>
+            <div class="highlight-item">
+              <div class="highlight-icon"><i class="fa-solid fa-arrows-rotate"></i></div>
+              <div class="highlight-info">
+                <strong>Instant Dataset Swap</strong>
+                <p>Change JSON/CSV datasets on the fly without restart</p>
+              </div>
+            </div>
+            <div class="highlight-item">
+              <div class="highlight-icon"><i class="fa-brands fa-meta"></i></div>
+              <div class="highlight-info">
+                <strong>Ready for Meta & Twilio</strong>
+                <p>Official webhooks built-in for 24/7 deployment</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Available Datasets Presets -->
+        <div class="tab-content" id="tabContentPresets">
+          <div class="presets-list-header">
+            <h3>Sample Datasets</h3>
+            <p>Pick any preset or upload your own dataset file.</p>
+          </div>
+          <div class="preset-cards" id="presetCardsList">
+            <!-- Populated dynamically via JS -->
+          </div>
+          <button class="upload-custom-btn" id="uploadSidebarBtn">
+            <i class="fa-solid fa-file-arrow-up"></i> Upload Your Own File (.json / .csv)
+          </button>
+        </div>
+
+        <!-- Tab 3: Bot Performance & Analytics -->
+        <div class="tab-content" id="tabContentAnalytics">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span class="stat-num" id="statTotalQueries">0</span>
+              <span class="stat-label">Total Messages</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-num text-success" id="statMatchRate">100%</span>
+              <span class="stat-label">Match Rate</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-num text-accent" id="statTotalIntents">15</span>
+              <span class="stat-label">Intents in KB</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-num" id="statFallbackCount">0</span>
+              <span class="stat-label">Fallbacks</span>
+            </div>
+          </div>
+
+          <div class="intents-distribution">
+            <h4><i class="fa-solid fa-chart-bar"></i> Top Triggered Intents</h4>
+            <div class="intents-list" id="intentsDistributionList">
+              <p class="empty-hint">Interact with the bot to see real-time trigger frequencies!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar Footer Status -->
+        <div class="sidebar-footer">
+          <div class="status-pill">
+            <span class="pulse-dot"></span> Webhook Online: <code>/webhook</code>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Center & Right: WhatsApp Web Phone / Screen Simulator -->
+      <main class="chat-viewport">
+        <div class="whatsapp-phone-frame">
+          
+          <!-- WhatsApp Top Bar -->
+          <div class="wa-header">
+            <div class="wa-header-contact">
+              <div class="wa-avatar">
+                <i class="fa-solid fa-robot"></i>
+                <span class="wa-status-dot"></span>
+              </div>
+              <div class="wa-contact-info">
+                <div class="wa-contact-name-row">
+                  <h3 id="waContactName">NovaTech Assistant</h3>
+                  <i class="fa-solid fa-circle-check verified-icon" title="Meta Verified Business"></i>
+                </div>
+                <div class="wa-status-text">
+                  <span id="waStatusText">online</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="wa-header-actions">
+              <button class="wa-icon-btn" title="Simulated Video Call"><i class="fa-solid fa-video"></i></button>
+              <button class="wa-icon-btn" title="Simulated Voice Call"><i class="fa-solid fa-phone"></i></button>
+              <div class="wa-divider"></div>
+              <button class="wa-icon-btn" id="clearChatBtn" title="Clear Conversation"><i class="fa-regular fa-trash-can"></i></button>
+              <button class="wa-icon-btn" id="openSettingsQuick" title="Dataset Studio"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+            </div>
+          </div>
+
+          <!-- WhatsApp Chat History Area (With Authentic WhatsApp Background) -->
+          <div class="wa-chat-body" id="waChatBody">
+            <div class="wa-bg-pattern"></div>
+
+            <div class="chat-date-divider">
+              <span>TODAY</span>
+            </div>
+
+            <div class="encryption-notice">
+              <i class="fa-solid fa-lock"></i> Messages are simulated end-to-end. WhatsApp Cloud API and Twilio Webhooks are active for production.
+            </div>
+
+            <!-- Welcome Message from Bot -->
+            <div class="message-row incoming" id="initialBotMessage">
+              <div class="message-bubble">
+                <div class="message-sender-name" id="initialSenderName">NovaTech Assistant</div>
+                <div class="message-content" id="initialMessageContent">
+                  <!-- Injected by JS -->
+                </div>
+                <div class="message-meta">
+                  <span class="message-time" id="initialMessageTime">01:45 PM</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Messages dynamically append here -->
+            <div id="messagesContainer"></div>
+
+            <!-- Typing indicator -->
+            <div class="typing-indicator-row hidden" id="typingIndicator">
+              <div class="typing-bubble">
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- WhatsApp Bottom Input Bar -->
+          <div class="wa-bottom-bar">
+            <!-- Quick Reply Chips Row -->
+            <div class="quick-replies-container" id="quickRepliesContainer">
+              <!-- Dynamically populated buttons -->
+            </div>
+
+            <form class="wa-input-form" id="chatForm">
+              <button type="button" class="wa-bar-btn" id="emojiPickerBtn" title="Insert Emoji">
+                <i class="fa-regular fa-face-smile"></i>
+              </button>
+              <button type="button" class="wa-bar-btn" id="attachBtn" title="Attach file">
+                <i class="fa-solid fa-paperclip"></i>
+              </button>
+
+              <div class="wa-input-wrapper">
+                <input 
+                  type="text" 
+                  id="messageInput" 
+                  class="wa-message-input" 
+                  placeholder="Type a message or click a suggestion..." 
+                  autocomplete="off"
+                  required
+                >
+              </div>
+
+              <button type="submit" class="wa-send-btn" id="sendBtn" title="Send message">
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- SLIDE-OVER DRAWER: DATASET MANAGER STUDIO -->
+  <div class="drawer-overlay hidden" id="datasetDrawerOverlay">
+    <div class="drawer-panel" id="datasetDrawer">
+      <div class="drawer-header">
+        <div class="drawer-title-group">
+          <h2><i class="fa-solid fa-sliders"></i> Dataset Management Studio</h2>
+          <p>Inspect, add, edit, or upload your own knowledge base dataset.</p>
+        </div>
+        <button class="drawer-close-btn" id="closeDatasetDrawerBtn">&times;</button>
+      </div>
+
+      <div class="drawer-body">
+        <!-- Dataset Overview Card -->
+        <div class="dataset-meta-card">
+          <div class="meta-row">
+            <div>
+              <span class="meta-label">Active Bot:</span>
+              <h3 id="drawerBotName">NovaTech Assistant</h3>
+            </div>
+            <div>
+              <span class="meta-label">Total Q&A Intents:</span>
+              <span class="count-badge" id="drawerIntentsCount">15</span>
+            </div>
+          </div>
+          <div class="meta-actions">
+            <button class="action-btn-sm" id="exportDatasetBtn">
+              <i class="fa-solid fa-download"></i> Export JSON
+            </button>
+            <label class="action-btn-sm upload-label" for="datasetFileInput">
+              <i class="fa-solid fa-upload"></i> Upload Custom File (.json / .csv)
+            </label>
+            <input type="file" id="datasetFileInput" accept=".json,.csv" style="display:none;">
+          </div>
+        </div>
+
+        <!-- Add New Q&A Entry Accordion / Form -->
+        <div class="add-entry-card">
+          <div class="card-header-toggle" id="toggleAddEntryBtn">
+            <h4><i class="fa-solid fa-circle-plus"></i> Add New Knowledge Entry (Q&A Pair)</h4>
+            <i class="fa-solid fa-chevron-down" id="addEntryChevron"></i>
+          </div>
+          <form class="add-entry-form hidden" id="addEntryForm">
+            <div class="form-group">
+              <label for="intentNameInput">Intent Identifier (e.g. <code>store_location</code> or <code>laptop_deals</code>):</label>
+              <input type="text" id="intentNameInput" placeholder="e.g. shipping_rates" required>
+            </div>
+            <div class="form-group">
+              <label for="patternsInput">User Question / Matching Phrases (comma-separated):</label>
+              <textarea id="patternsInput" rows="2" placeholder="e.g. how much is shipping, delivery fee, shipping rates, courier charges" required></textarea>
+              <span class="field-hint">Include common variations and keywords your customers might type.</span>
+            </div>
+            <div class="form-group">
+              <label for="responseInput">Bot WhatsApp Answer (supports WhatsApp formatting: *bold*, _italic_, • bullet):</label>
+              <textarea id="responseInput" rows="3" placeholder="e.g. Standard shipping is FREE on orders above $50! Express delivery is $14.99." required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="quickRepliesInput">Quick Reply Pills (comma-separated, up to 3):</label>
+              <input type="text" id="quickRepliesInput" placeholder="e.g. Track Order, Return Policy, Speak to Agent">
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="primary-btn"><i class="fa-solid fa-save"></i> Save to Active Dataset</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Current Knowledge Base Search & Table -->
+        <div class="kb-entries-section">
+          <div class="kb-search-bar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="kbSearchInput" placeholder="Search knowledge base patterns or responses...">
+          </div>
+
+          <div class="kb-table-container">
+            <table class="kb-table">
+              <thead>
+                <tr>
+                  <th style="width: 25%;">Intent & Patterns</th>
+                  <th style="width: 50%;">Bot Response</th>
+                  <th style="width: 15%;">Quick Replies</th>
+                  <th style="width: 10%;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="kbTableBody">
+                <!-- Dynamically populated entries -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CONNECT REAL WHATSAPP GUIDE -->
+  <div class="modal-overlay hidden" id="apiGuideModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="modal-icon"><i class="fa-brands fa-whatsapp"></i></div>
+          <div>
+            <h3>Connect Real WhatsApp to Your Bot</h3>
+            <p>Deploy to Meta WhatsApp Cloud API or Twilio WhatsApp Sandbox</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="closeApiGuideBtn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="webhook-info-banner">
+          <div class="webhook-info-item">
+            <span class="wh-label">Your Live Server Webhook URL:</span>
+            <div class="copy-box">
+              <code id="metaWebhookUrlDisplay">http://localhost:5000/webhook</code>
+              <button class="copy-btn" data-copy="metaWebhookUrlDisplay"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <span class="wh-tip">Use <code>ngrok http 5000</code> or <code>cloudflared</code> to get a public HTTPS URL for Meta/Twilio.</span>
+          </div>
+
+          <div class="webhook-info-item">
+            <span class="wh-label">Meta Verify Token:</span>
+            <div class="copy-box">
+              <code id="verifyTokenDisplay">my_secret_whatsapp_verify_token_2026</code>
+              <button class="copy-btn" data-copy="verifyTokenDisplay"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-tabs">
+          <button class="guide-tab active" data-guide="meta"><i class="fa-brands fa-meta"></i> Meta Cloud API (Official & Free)</button>
+          <button class="guide-tab" data-guide="twilio"><i class="fa-solid fa-code-branch"></i> Twilio WhatsApp</button>
+        </div>
+
+        <div class="guide-tab-content active" id="guideMeta">
+          <ol class="step-list">
+            <li>
+              <strong>1. Create Meta Developer App</strong>
+              <p>Go to <a href="https://developers.facebook.com" target="_blank" rel="noopener">developers.facebook.com</a> > <em>My Apps</em> > <em>Create App</em> > Select <strong>Other</strong> > <strong>Business</strong>.</p>
+            </li>
+            <li>
+              <strong>2. Add WhatsApp Product</strong>
+              <p>In the app dashboard, click <strong>Set Up WhatsApp</strong>. You'll receive a test phone number and a temporary access token.</p>
+            </li>
+            <li>
+              <strong>3. Configure Webhook in Meta</strong>
+              <p>Under <strong>WhatsApp > Configuration</strong>, click <em>Edit Webhook</em>:</p>
+              <ul>
+                <li><strong>Callback URL:</strong> <code>https://your-domain.ngrok-free.app/webhook</code></li>
+                <li><strong>Verify Token:</strong> <code>my_secret_whatsapp_verify_token_2026</code></li>
+              </ul>
+              <p>Subscribe to the <code>messages</code> field.</p>
+            </li>
+            <li>
+              <strong>4. Put Tokens in <code>.env</code> file</strong>
+              <p>Add <code>WHATSAPP_CLOUD_TOKEN</code> and <code>PHONE_NUMBER_ID</code> to your <code>.env</code> file. Your bot will now automatically respond to real WhatsApp messages!</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="guide-tab-content" id="guideTwilio">
+          <ol class="step-list">
+            <li>
+              <strong>1. Open Twilio Console</strong>
+              <p>Go to <a href="https://console.twilio.com" target="_blank" rel="noopener">console.twilio.com</a> > <strong>Messaging</strong> > <strong>Try WhatsApp Sandbox</strong>.</p>
+            </li>
+            <li>
+              <strong>2. Configure Sandbox Webhook</strong>
+              <p>Set <em>"When a message comes in"</em> URL to:</p>
+              <code>https://your-domain.ngrok-free.app/twilio/webhook</code> (HTTP POST).
+            </li>
+            <li>
+              <strong>3. Send WhatsApp Message to Sandbox Number</strong>
+              <p>Send the join code to Twilio's WhatsApp number. You'll immediately receive replies from your custom dataset bot!</p>
+            </li>
+          </ol>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="primary-btn" id="closeApiGuideFooterBtn">Got it, Let's Test!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
